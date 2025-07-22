@@ -5,6 +5,7 @@ import com.student_hub.domain.enumerators.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.nio.channels.Channel;
 import java.time.LocalDate;
 
 @Entity
@@ -17,19 +18,25 @@ public class UserPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userPostId;
+
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "user_post")
     private User user;
+
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "user_channel")
-    private Channel channel;
+    private Channel
+
     @Enumerated(EnumType.STRING)
     private UserPostType userPostType;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     private LocalDate postTimestamp;
     private boolean isModeratedPost;
     private boolean isUserChannelModerator;
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+
 
     protected UserPost(){}
 }

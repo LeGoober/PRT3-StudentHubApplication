@@ -1,28 +1,68 @@
 package com.student_hub.factory;
 
-import com.student_hub.domain.User;
+import com.student_hub.domain.*;
 import com.student_hub.domain.enumerators.UserRole;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.student_hub.util.Helper;
 
 public class UserFactory {
-    public static User createUser(
-            Long userId,
-            String userFirstName,
-            String userLastName,
-            UserRole userRole,
-            String userEmail,
-            String userPassword
 
-    ) {
+    public static User createUser(UserRole role, String firstName, String lastName, String email, String password, String studentNumber, String staffNumber) {
+        if (role == null || Helper.isNullOrEmpty(firstName) || Helper.isNullOrEmpty(lastName) || Helper.isNullOrEmpty(email) || Helper.isNullOrEmpty(password)) {
+            return null;
+        }
 
-        return User.builder()
-                .userId(userId)
-                .userFirstName(userFirstName)
-                .userLastName(userLastName)
-                .userRole(userRole)
-                .userEmail(userEmail)
-                .userPassword(userPassword)
-                .build();
+        Long id = Helper.generateId();
+
+        switch (role) {
+            case STUDENT:
+                return Students.builder()
+                        .userId(id)
+                        .userFirstName(firstName)
+                        .userLastName(lastName)
+                        .userEmail(email)
+                        .userPassword(password)
+                        .userRole(role)
+                        .studentNumber(studentNumber)
+                        .build();
+            case ADMIN:
+                return Admin.builder()
+                        .userId(id)
+                        .userFirstName(firstName)
+                        .userLastName(lastName)
+                        .userEmail(email)
+                        .userPassword(password)
+                        .userRole(role)
+                        .staffNumber(staffNumber)
+                        .build();
+            case FACULTY_MEMBER:
+                return FacultyMembers.builder()
+                        .userId(id)
+                        .userFirstName(firstName)
+                        .userLastName(lastName)
+                        .userEmail(email)
+                        .userPassword(password)
+                        .userRole(role)
+                        .build();
+            case IT_SUPPORT_STAFF:
+                return ITSupportStaff.builder()
+                        .userId(id)
+                        .userFirstName(firstName)
+                        .userLastName(lastName)
+                        .userEmail(email)
+                        .userPassword(password)
+                        .userRole(role)
+                        .build();
+            case GUEST:
+                return GuestProfile.builder()
+                        .userId(id)
+                        .userFirstName(firstName)
+                        .userLastName(lastName)
+                        .userEmail(email)
+                        .userPassword(password)
+                        .userRole(role)
+                        .build();
+            default:
+                return null;
+        }
     }
 }

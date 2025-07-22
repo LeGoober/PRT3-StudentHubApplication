@@ -6,19 +6,25 @@ import lombok.*;
 
 @Entity
 @Getter
+@Setter // Added @Setter for convenience in managing relationships
 @Builder
-@ToString
-@AllArgsConstructor (access = AccessLevel.PROTECTED)
+@ToString(exclude = {"userProduct"}) // Exclude collections from toString to prevent infinite loops
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name = "products")
 public class Products {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_product_id", nullable = false)
+    private UserProduct userProduct;
+
     private String productName;
-    @Enumerated(EnumType.STRING)
-    private ReturnType productReturnType;
     private String productDescription;
 
-    protected Products() {}
+    @Enumerated(EnumType.STRING)
+    private ReturnType productReturnType;
 
 }

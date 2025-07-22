@@ -1,18 +1,22 @@
 package com.student_hub.domain;
 
-import jakarta.persistence.*;
+import com.student_hub.domain.enumerators.UserProfileType;
+import com.student_hub.domain.enumerators.UserRole;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
+@Table(name = "admin") // Specific table for Students' unique attributes
 @Getter
-@Builder
-@ToString
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "admin")
-public class Admin {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-
-    protected Admin(){}
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(callSuper = true)
+@DiscriminatorValue("ADMIN")
+@SuperBuilder
+public class Admin extends User {
+    private String staffNumber;
 }
